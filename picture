@@ -1,0 +1,32 @@
+
+#-*-coding:UTF-8-*-
+
+import urllib
+import re
+import sqlite3
+
+
+
+def getHtml(url):
+    page=urllib.urlopen(url)
+    html=page.read()
+    return html
+
+html = getHtml('http://www.topit.me/tag/美女')
+
+def getImg(html):
+    reg = r'src="(.+?\.jpg)"'
+    imgre=re.compile(reg)
+    imglist=re.findall(imgre,html)
+    x=1
+    for imgurl in imglist:
+        print(imgurl)
+        url=imgurl.split('.')
+        if url[1] == 'jpg':
+            urllib.urlretrieve(imgurl,'/Users/shafengfeng/Downloads/pictures/%s.jpg'%x)
+            x+=1
+        elif url[1]=='gif':
+            urllib.urlretrieve(imgurl,'/Users/shafengfeng/Downloads/pictures/%s.gif'%x)
+            x+=1
+getImg(html)
+
